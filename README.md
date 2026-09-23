@@ -1,31 +1,31 @@
 # Podcast Generator
 
-Podcast Generator is a GitHub Action that turns a podcast configuration file into an RSS 2.0 podcast feed. It reads a YAML definition, generates an XML feed containing your episodes, and commits the result back to your repository.
+Podcast Generator is a GitHub Action that transforms a podcast configuration file into an RSS 2.0 feed for podcast apps and directories. It reads a YAML definition, generates the XML feed for your episodes, and commits the result back to your repository.
 
-This is useful for maintaining a podcast feed in source control without manually creating XML by hand.
+This project is designed for teams and creators who want to maintain a podcast feed in version control without hand-writing RSS XML.
 
 ## Features
 
 - Reads a `feed.yaml` file from the repository root
-- Generates a valid RSS podcast feed as `podcast.xml`
-- Supports common podcast metadata such as title, subtitle, author, description, category, language, and image
-- Includes episode details like title, published date, duration, and audio file URL
-- Works as a GitHub Action and commits the generated feed automatically
+- Produces a valid podcast RSS feed as `podcast.xml`
+- Supports standard metadata including title, subtitle, author, description, category, language, and artwork
+- Includes episode details such as title, publish date, duration, and audio file metadata
+- Runs as a GitHub Action and automatically commits the generated feed
 
 ## How it works
 
-The action runs a small Python script that parses `feed.yaml` and writes an RSS document using the standard XML library. The resulting file is saved as `podcast.xml` and committed to the repository.
+The action executes a small Python script that parses `feed.yaml` and generates an RSS document using Python’s standard XML library. The resulting file is written to `podcast.xml` and committed to the repository.
 
 ## Repository layout
 
-- `feed.py` – script that reads `feed.yaml` and writes `podcast.xml`
-- `entrypoint.sh` – GitHub Action entrypoint that configures git and runs the generator
-- `action.yaml` – action metadata and inputs
-- `Dockerfile` – Ubuntu-based container that installs Python and YAML support
+- `feed.py` — reads `feed.yaml` and generates the RSS feed
+- `entrypoint.sh` — configures git and runs the generator in the action container
+- `action.yaml` — GitHub Action metadata and input definitions
+- `Dockerfile` — installs the dependencies required to run the generator
 
 ## Usage
 
-Add a workflow like the following to your repository:
+Add a workflow similar to the following to your repository:
 
 ```yaml
 name: Update podcast feed
@@ -53,7 +53,7 @@ jobs:
           name: Podcast Bot
 ```
 
-This action expects the repository to contain a `feed.yaml` file and will generate a `podcast.xml` feed as part of the workflow.
+The action expects a `feed.yaml` file in the repository root and will generate a `podcast.xml` feed as part of the workflow.
 
 ## Example `feed.yaml`
 
@@ -90,13 +90,13 @@ The action writes an RSS document named `podcast.xml` that includes:
 - podcast artwork
 - category and language information
 - one `<item>` entry per episode
-- enclosure metadata for the audio file URL and file size
+- enclosure metadata for the audio URL and file size
 
 ## Notes
 
-- `link` is used as the base URL for image and media URLs.
-- The script assumes media files are available at the paths referenced in `feed.yaml`.
-- The generated feed should be served from a public URL if you want it to be consumed by podcast apps.
+- `link` is used as the base URL for image and media resources.
+- The script assumes the audio files referenced in `feed.yaml` are available at those paths.
+- The generated feed should be publicly accessible if you want it to be consumed by podcast apps and directories.
 
 ## License
 
